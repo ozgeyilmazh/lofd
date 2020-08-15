@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% include 'book_comment_modal.html' %}
+
+{% block content %}
+
+
+
+    <section class="resume-section p-3 p-lg-5 d-flex justify-content-center" id="books" href="books">
+          <div class="w-100">
+              <h2 class="mb-4"> Books </h2>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-12">
+                          <table class="table table-bordered">
+                              <thead>
+                              <tr>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;"> Book Name </th>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;"> Author </th>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;"> # </th>
+                                  <!--
+                              <th scope="col" style="text-align: center; vertical-align: middle;"> Status </th>
+                                  -->
+                              </tr>
+                              </thead>
+                              <tbody>
+                                
+                             
+                                
+                              <h3> Hello {{ request.user }}</h3>
+                              
+                              {% for foo in books %}
+
+                                  <tr>
+                                      <td style="text-align: left; vertical-align: middle;">
+                                        
+                                        <a href="#"title="{{foo.booksList.title}}" data-toggle="popover" data-trigger="hover" data-content="
+                                        {% for c in c %}
+                                        {% if c.booksList.id == foo.booksList.id %}
+                                        {{c.comments}}
+                                        {% endif %}
+                                        {% endfor %}
+                                        ">{{ foo.booksList.title }}</a></td>
+                                      <td style="text-align: left; vertical-align: middle;"> {{ foo.booksList.authors }} </td>
+                                      <td style="text-align: center; vertical-align: middle;">{{ id }}
+                                          <button type="submit" class="small btn" >
+                                            <a style="color: #34ce57;" href="{% url 'createComment' foo.booksList.id  %}">
+                                                <i class="far fa-comment-dots"></i></a>
+                                          </button>
+                                          <button type="submit" class="small btn" style="color: red;">
+                                              <a href="{%  url 'booksDelete' foo.id %}">
+                                                  <i class="far fa-trash-alt"></i></a>
+                                          </button>
+                                      </td>
+                                  </tr>
+                                  
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            
+                <hr class="m-0">
+                <!--Pagination amber-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pg-amber justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" tabindex="-1" href="#">Previous</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!--Pagination ends-->
+            </div>
+    </section>
+
+    <hr class="m-0">
+    
+      <br><br><br>
+{% endblock content %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block content %}
+
+
+<section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="skills">
+          <div class="w-100">
+                <h2 class="mb-4"> MOVIES - SERIES </h2>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                        {{ request.user }}
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"> Image </th>
+                                            <th scope="col"> Movie /Series </th>
+                                            <th scope="col"> # </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for foo in watch %}
+                                        <tr>
+                                            {% if foo.cover_image %}
+                                                <td style="text-align: center;">
+                                                    <img src="{{ foo.cover_image.url }}" style="width: 40px; height: 40px;">
+                                                </td>
+                                            {% else %}
+                                                <td style="text-align: center;">
+                                                    <img src="{{ 'static/img/noimage.jpg' }}" style="width: 50px; height: 50px;">
+                                                </td>
+                                            {% endif %}
+                                            <td> {{ foo.watchesList }} </td>
+                                             <td style="text-align: center; vertical-align: middle;">{{ id }}
+                                          <button type="submit" class="small btn" >
+                                              <a style="color: #34ce57;" href="{% url 'createWComment' foo.watchesList.id  %}">
+                                                  <i class="far fa-comment-dots"></i></a>
+                                          </button>
+                                                <button type="submit" class="small btn" style="color: red;">
+                                                <a href="{%  url 'watchDelete' foo.id %}">
+                                                    <i class="far fa-trash-alt"></i></a>
+                                                </button>
+                                             </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="m-0">
+                <!--Pagination amber-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pg-amber justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" tabindex="-1" href="#">Previous</a>
+
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"></a>
+                        </li>
+
+
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!--Pagination ends-->
+
+            </div>
+
+</section>
+
+<hr class="m-0"> {% endblock content %}

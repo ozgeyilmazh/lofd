@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+
+
+
+{% block content %}
+    <br>
+    <p id="demo" class="alert-success" >
+    </p>
+    <p id="demo1" class="alert-success">
+    </p>
+
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="setting">
+    <div class="w-100">
+        <h2 class="mb-4">Lists</h2>
+        <p> Buraya Liste Gelecek Dizi Kitap Film liste </p>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav>
+                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"> Books </a>
+                        <a class="nav-item nav-link " id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">Series & Movies</a>
+                      </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                          <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">First</th>
+                                  <th scope="col">Last</th>
+                                  <th scope="col">#</th>
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {% for foo in books %}
+                       <form class="form-add" method="POST" action="{% url 'add' foo.id  %}"  name="books"> {% csrf_token %}
+                           <tr>
+                               <td>{{ foo.authors }}
+                               </td>
+                               <td>{{ foo.title }}
+                               </td>
+                               <td>
+                                   <button type="submit" class="small btn" style="color: #902b2b"><i class="fas fa-check"></i> </button>
+                               </td>
+                           </tr>
+                      </form>
+                        {% endfor %}
+                              </tbody>
+                            </table>
+                      </div>
+                      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">Title</th>
+                                  <th scope="col">#</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {% for foo in watch %}
+                       <form class="form-add2" method="POST"  action="{% url 'addWatch' foo.id %}" name="watch"> {% csrf_token %}
+                           <tr>
+                               <th scope="row" width="150" height="150">
+                                   {% if foo.cover_image %}
+                                       <img src="{{ foo.cover_image.url }}" class="w-50">
+                                   {% else %}
+                                       <img src="{{ 'static/img/noimage.png' }}" class="w-50">
+                                   {% endif %}
+                               </th>
+                               <td>
+                                   {{ foo.title }}
+                               </td>
+                               <td>
+                                   <button type="submit" class="small btn" style="color: #902b2b"><i class="fas fa-check"></i> </button>
+                               </td>
+                           </tr>
+                      </form>
+                        {% endfor %}
+
+                              </tbody>
+                            </table>
+                      </div>
+                    </div>
+                    <hr class="m-0">
+                    <!--Pagination amber-->
+                    <nav aria-label="Page navigation example">
+                            <ul class="pagination pg-amber justify-content-center">
+                            {% if posts.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" tabindex="-1" href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+
+                                </li>
+                            {% endif %}
+
+                                <li class="page-item">
+                                       <span class="page-link">Sayfa {{ posts.number }} of {{ posts.paginator.num_pages }}.</span>
+                                </li>
+                            {% if posts.has_next %}
+
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+                                </li>
+                            {% endif %}
+
+                            </ul>
+                        </nav>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+{% endblock content %}
