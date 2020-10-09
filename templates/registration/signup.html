@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="Lwrapper">
+    <br>
+    <br>
+    <br>
+    <form class="Lform-signin" method="POST">
+        {% csrf_token %}
+        <center>
+            <h2 class="Lform-signin-heading">{% trans 'Please Sign Up' %}</h2>
+            <br> {% trans 'Email' %}<br> {{ form.email }}
+            <br>
+            <br> {% trans 'Username' %}<br> {{ form.username }}
+            <br>
+            <br> {% trans 'Password' %}<br> {{ form.password }}
+            <br>
+            <br> {% trans 'Password Again' %}<br> {{ form.confirm }}
+            <br>
+            <br>
+            <br>
+            <button class="btn btn-lg btn-secondary" type="submit"> {% trans 'Register' %} </button>
+        </center>
+
+    </form>
+</div>
+
+{% endblock content %}

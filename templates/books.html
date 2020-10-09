@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% include 'emptyPage/book_comment_modal.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+
+
+    <section class="resume-section p-3 p-lg-5 d-flex justify-content-center" id="books" href="books">
+          <div class="w-100">
+              <h2 class="mb-4"> {% trans 'Books' %} </h2>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
+                          <table class="table table-bordered">
+                              <thead>
+                              <tr>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;">{% trans 'Book Name' %}</th>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;"> {% trans 'Author' %} </th>
+                                  <th scope="col" style="text-align: center; vertical-align: middle;"> {% trans 'Edit' %} </th>
+                                  <!--
+                              <th scope="col" style="text-align: center; vertical-align: middle;"> Status </th>
+                                  -->
+                              </tr>
+                              </thead>
+                              <tbody>
+
+                              {% for foo in books %}
+                                  <tr>
+                                      <td style="text-align: left; vertical-align: middle;">
+                                        
+                                        <a href="#"title="{{foo.booksList.title}}" data-toggle="popover" data-trigger="hover" data-content="
+                                        {% for c in c %}
+                                        {% if c.booksList.id == foo.booksList.id %}
+                                        {{c.comments}}
+
+                                        {% endif %}
+                                        {% endfor %}
+                                        ">{{ foo.booksList.title }}</a></td>
+                                      <td style="text-align: left; vertical-align: middle;"> {{ foo.booksList.authors }} </td>
+                                      <td style="text-align: center; vertical-align: middle;">{{ id }}
+
+                                         <button type="submit" class="small btn" >
+                                            <a style="color: #34ce57;" href="{% url 'createComment' foo.booksList.id  %}">
+                                                       <i class="far fa-comment-dots"></i>
+                                            </a>
+                                          </button>
+                             {% for c in c %}
+                                 {% if  c.booksList.id == foo.booksList.id %}
+                                               <button type="submit" class="small btn" >
+                                            <a style="color: #34ce57;" href="{% url 'updateComment' foo.booksList.id  %}">
+                                                <i class="far fa-edit"></i></a>
+                                          </button>
+                                 {% endif %}
+                             {% endfor %}
+                                          <button type="submit" class="small btn" style="color: red;">
+                                              <a href="{%  url 'booksDelete' foo.id %}">
+                                                  <i class="far fa-trash-alt"></i></a>
+                                          </button>
+                                      </td>
+                                  </tr>
+                              {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            
+                <hr class="m-0">
+                    <!--Pagination amber-->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pg-amber justify-content-center">
+                            {% if books.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" tabindex="-1" href="?page={{ books.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Previous' %}</a>
+
+                                </li>
+                            {% endif %}
+
+                                <li class="page-item">
+                                       <span class="page-link">Sayfa {{ books.number }} of {{ books.paginator.num_pages }}.</span>
+                                </li>
+                            {% if books.has_next %}
+
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ books.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Next' %}</a>
+                                </li>
+                            {% endif %}
+
+                            </ul>
+                        </nav>
+                <!--Pagination ends-->
+            </div>
+    </section>
+
+    <hr class="m-0">
+    
+      <br><br><br>
+{% endblock content %}
