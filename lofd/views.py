@@ -226,6 +226,23 @@ def addWatch(request, pid):
 def createComment(request, pid):
 	context = dict()
 	context['books'] = get_object_or_404(Book, id=pid)
+	print("trydan önce")
+	try:
+		q1 = get_object_or_404(BookComment, booksList_id=pid)
+		print("try")
+	except:
+		q1=None
+		print("except")
+	if q1 != None:
+		print("if")
+		context['bComments'] = get_object_or_404(BookComment, booksList_id=pid)
+
+		template='comments/updateText.html'
+		return render(request, template, context)
+
+	else:
+		template='comments/text.html'
+		return render(request, template, context)
 
 	template = 'comments/text.html'
 	return render(request, template, context)

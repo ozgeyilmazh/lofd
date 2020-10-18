@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 {% if books %}
-                <p style="color: #902b2b">{{ book }}</p>
+                <p style="color: #902b2b">{{ books }}</p>
                 {% elif watch %}
                 <p style="color: #902b2b">{{ watch }}</p>
                 {% endif %}
@@ -20,9 +20,9 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 {% if books %}
-                     <form method="POST" name="comments">
+                     <form action="{% url 'updateComment' books.id %}" method="POST" name="comments">
                         {% csrf_token %}
-                        <label for="exampleFormControlTextarea1">{{ books.comments }}</label>
+                        <label for="exampleFormControlTextarea1">{{ bComments.comments }}</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" required id="id_comments" name="comments"  rows="2"></textarea>
                         <br><br>
                         <button style="float: right;" type="submit" class="btn btn-success"> Update </button>
