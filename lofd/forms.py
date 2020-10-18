@@ -7,6 +7,7 @@ from lofd.models import (
     Watch,
     BookComment,
     WatchComment,
+    Personal,
 )
 
 # Book List Create
@@ -52,6 +53,38 @@ class WatchCommenForm(ModelForm):
         fields = ['comments',]
         widgets = {
             'comments': TextInput(attrs={
+                'class': 'input',
+            }),
+        }
+
+
+class PersonForm(ModelForm):
+    class Meta:
+        model = Personal
+        fields = ['name', 'surname', 'email', 'abouts', 'phone', 'f_account', 'i_account', 't_account']
+        widgets = {
+            'name': TextInput(attrs={
+                'class': 'input',
+            }),
+            'surname': TextInput(attrs={
+                'class': 'input',
+            }),
+            'email': TextInput(attrs={
+                'class': 'input',
+            }),
+            'abouts': TextInput(attrs={
+                'class': 'input',
+            }),
+            'phone': TextInput(attrs={
+                'class': 'input',
+            }),
+            'f_account': TextInput(attrs={
+                'class': 'input',
+            }),
+            'i_account': TextInput(attrs={
+                'class': 'input',
+            }),
+            't_account': TextInput(attrs={
                 'class': 'input',
             }),
         }

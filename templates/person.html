@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block content %}
+{% load static %}
+{% load i18n %}
+
+
+
+<section class="resume-section p-3 p-lg-5 d-flex align-items-center" href="about">
+    <div class="w-100">
+        <h1 class="mb-1">
+            <span class="text-primary" style="font-size: 24px;"> {% trans 'Personal Info' %} </span>
+        </h1>
+
+        <hr class="m-0"><br>
+         <form action="{% url 'addUser' %}" method="POST" name="personInfo">
+             {% csrf_token %}
+                  <div class="form-row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="First name" name="name">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="Last name" name="surname">
+                    </div>
+                  </div>
+                <div class="form-group"><br>
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  </div>
+                <div class="form-group">
+                    <textarea name="abouts" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="About"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Phone" name="phone">
+                  </div>
+                <div class="form-row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="Facebook" name="f_account">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="Instagram" name="i_account">
+                    </div>
+                     <div class="col">
+                      <input type="text" class="form-control" placeholder="Twitter" name="t_account">
+                    </div>
+                  </div>
+             <br><br>
+             <button style="float: right;" type="submit" class="btn btn-success"> Add / Update </button>
+         </form>
+    </div>
+</section>
+
+
+{% endblock%}

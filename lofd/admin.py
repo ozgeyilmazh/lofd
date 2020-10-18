@@ -6,6 +6,7 @@ from .models import (
     WatchUserList,
     BookComment,
     WatchComment,
+    Personal,
 )
 # Ckeditor
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -65,7 +66,6 @@ class WatchCommentUserAdmin(admin.ModelAdmin):
         'comments',
     )
 
-"""
 class PersonalAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -73,7 +73,6 @@ class PersonalAdmin(admin.ModelAdmin):
         'email',
     )
 
-"""
 # Ckeditor
 class ModalClass:
     content = RichTextUploadingField()
@@ -81,7 +80,7 @@ class ModalClass:
 class PostForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorUploadingWidget())
 
-#admin.site.register(Peronal, PersonalAdmin)
+admin.site.register(Personal, PersonalAdmin)
 admin.site.register(BookUserList, BookUserAdmin)
 admin.site.register(WatchUserList, WatchUserAdmin)
 admin.site.register(BookComment, BookCommentUserAdmin)
@@ -90,3 +89,4 @@ admin.site.register(WatchComment, WatchCommentUserAdmin)
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(Watch, WatchAdmin)
+

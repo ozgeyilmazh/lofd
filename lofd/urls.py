@@ -17,7 +17,8 @@ urlpatterns = [
     # Personal Comments
     #path('mycomments/', mycCmments, name='mycomments'),
 
-    path('create/', CreateWatchList, name='create'),
+    # Bu silinebilir
+    #path('create/', CreateWatchList, name='create'),
 
     # Book Add
     path('add/<int:pid>', addList, name='add'),
@@ -39,6 +40,8 @@ urlpatterns = [
     path('addWComment/<int:pid>', addWComment, name='addWComment'),
     #path('booksCDelete/<int:pid>', booksCDelete, name='booksCDelete'),
     #path('watchCDelete/<int:pid>', watchCDelete, name='watchCDelete'),
-
+    path('person/', personIndex, name='person'),
+    path('personEdit/', personEdit, name='personEdit'),
+    path('addUser/', addUser, name='addUser'),
 
 ]

@@ -9,7 +9,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 # Book
 from multiselectfield import MultiSelectField
 
-
+# Books Model
 class Book(models.Model):
     authors = models.CharField(
         max_length=200,
@@ -39,7 +39,7 @@ class Book(models.Model):
         ordering = ['title']
 
 
-# Movie & Series
+# Movie & Series Model
 class Watch(models.Model):
     title=models.CharField(
         max_length=200,
@@ -58,6 +58,7 @@ class Watch(models.Model):
         return self.title
 
 
+# User Books Lists Model
 class BookUserList(models.Model):
     user = models.ForeignKey(
         User,
@@ -71,6 +72,7 @@ class BookUserList(models.Model):
     )
 
 
+# User Series Lists Model
 class WatchUserList(models.Model):
     user = models.ForeignKey(
         User,
@@ -85,6 +87,7 @@ class WatchUserList(models.Model):
     )
 
 
+# Books Comments Model
 class BookComment(models.Model):
     user = models.ForeignKey(
         User,
@@ -102,6 +105,7 @@ class BookComment(models.Model):
     comments = RichTextField(max_length=350)
 
 
+# Series Comments Model
 class WatchComment(models.Model):
     user = models.ForeignKey(
         User,
@@ -118,16 +122,26 @@ class WatchComment(models.Model):
 
     comments = RichTextField(max_length=350)
 
-"""
-class Peronal(models.Model):
+
+# Person Infos
+class Personal(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         null=True,
     )
-    address = models.CharField(
-        max_length=150,
+    name = models.CharField(
+        max_length=15,
         blank=True
+    )
+    surname = models.CharField(
+        max_length=15,
+        blank=True
+    )
+    abouts = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True,
     )
     phone = models.CharField(
         max_length=15,
@@ -149,16 +163,12 @@ class Peronal(models.Model):
         null=True,
         blank=True,
     )
-    l_account = models.CharField(
-        max_length=200,
-        null=True,
-        blank=True,
-    )
-    t_account=models.CharField(
+    t_account = models.CharField(
         max_length=200,
         null=True,
         blank=True,
     )
     def __str__(self):
-        return self.phone,
-"""
+        return self.email
+
+

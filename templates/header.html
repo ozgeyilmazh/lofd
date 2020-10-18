@@ -51,10 +51,10 @@
                     <a class="nav-link js-scroll-trigger" href="{% url 'about' %}"> {{ user.username }} </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{% url 'lists' %}"> {% trans 'BOOKS LISTS' %} </a>
+                    <a class="nav-link js-scroll-trigger" href="{% url 'lists' %}"> {% trans 'BOOKS' %} </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{% url 'wlists' %}"> {% trans 'WATCHES LISTS' %} </a>
+                    <a class="nav-link js-scroll-trigger" href="{% url 'wlists' %}"> {% trans 'SERIES' %} </a>
                 </li>
 
                 {% if user.is_authenticated %}
@@ -64,16 +64,24 @@
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="{% url 'watch' %}"> {% trans 'MY SERIES' %} </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#"> {% trans 'Empty Page' %} </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}"> {% trans 'Logout' %} </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{% url 'password_change' %}"> {% trans 'Password <br> Change' %} </a>
-                </li>
+
+                <div class="dropdown show">
+                  <a class="btn  dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgba(255,255,255,.75); font-weight:800; letter-spacing: .05r
+; text-transform: uppercase;">
+                    PROFILE
+                  </a>
+
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="background-color: #f1f1e3; font-weight:800; letter-spacing: .05r
+; text-transform: uppercase;">
+                    <a class="dropdown-item" href="{% url 'person'  %}"> {% trans 'My Settings' %} </a>
+                    <a class="dropdown-item" href="{% url 'password_change' %}"> {% trans 'Password <br> Change' %} </a>
+                    <a class="dropdown-item" href="{% url 'logout' %}"> {% trans 'Logout' %} </a>
+                  </div>
+                </div>
+
                 {% else %}
+
+
 
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="{% url 'signup' %}"> {% trans 'Signup' %} </a>

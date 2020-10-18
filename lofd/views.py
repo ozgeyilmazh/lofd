@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -8,6 +9,7 @@ from lofd.forms import (
 	WatchForm,
 	BookCommenForm,
 	WatchCommenForm,
+	PersonForm,
 )
 from lofd.models import (
 	Book,
@@ -16,7 +18,7 @@ from lofd.models import (
 	WatchUserList,
 	BookComment,
 	WatchComment,
-	#Peronal,
+	Personal,
 )
 from django.contrib import messages
 from django.http import HttpResponse, response, request, HttpResponseRedirect
@@ -33,7 +35,7 @@ def Home(request):
 
 def About(request):
 	context = dict()
-	#context['personal'] = Peronal.objects.all()
+	context['personal'] = Personal.objects.all()
 
 	template = 'about.html'
 	return render(request, template, context)
@@ -131,11 +133,12 @@ def WLists(request):
 	except(EmptyPage):
 		context['watch'] = paginator.page(paginator.num_pages)
 
-
 	template = 'w-lists.html'
 	return render(request, template, context)
 
 
+"""
+# Burası gereksiz Silinebilir
 def CreateWatchList(request):
 	context = dict()
 	url = request.META.get('HTTP_REFERER')
@@ -146,6 +149,8 @@ def CreateWatchList(request):
 
 	template = 'lists.html'
 	return render(request, template, context)
+"""
+
 
 """
 def mycCmments(request):
@@ -157,6 +162,7 @@ def mycCmments(request):
 	template = 'mycomments.html'
 	return render(request, template, context)
 """
+
 
 # Müşteri Sepet Onaylama
 def addList(request, pid):
@@ -231,7 +237,7 @@ def createComment(request, pid):
 		q1 = get_object_or_404(BookComment, booksList_id=pid)
 		print("try")
 	except:
-		q1=None
+		q1 = None
 		print("except")
 	if q1 != None:
 		print("if")
@@ -268,6 +274,7 @@ def updateComment(request, pid):
 	template = 'comments/updateText.html'
 	return render(request, template, context)
 
+
 # watches için update yorum işlemi
 def editComment(request, pid):
 	context = dict()
@@ -287,6 +294,7 @@ def editComment(request, pid):
 
 	template = 'comments/updateText.html'
 	return render(request, template, context)
+
 
 # watches için Create yorum işlemi
 def createWComment(request, pid):
@@ -312,6 +320,7 @@ def createWComment(request, pid):
 
 	template = 'books.html'
 	return render(request, template, context)
+
 
 # Book Comments
 def addComment(request, pid):
@@ -426,6 +435,7 @@ def watchDelete(request, pid):
 	messages.success(request, "WatchUserList deleted from .. ")
 	return HttpResponseRedirect(url)
 
+
 """ Bu işlemi bu booksDelete fonksiyondan kitap ile beraber yorum silme 
 # Listeden Kitap Yorum Silme
 def booksCDelete(request, pid):
@@ -457,3 +467,220 @@ def error_500(request):
 	context = dict()
 
 	return render(request,'error/error_500.html', context)
+
+
+
+def personIndex(request):
+	context = dict()
+	current_user = request.user
+	#context['users'] = get_object_or_404(User, id=current_user.id)
+	print("trydan önce")
+	print(get_object_or_404(User, id=current_user.id))
+	print("*************")
+	try:
+		q1 = get_object_or_404(Personal, user_id=current_user.id)
+		print("q1", q1)
+		print("try")
+	except:
+		q1 = None
+		print("except")
+		print("q1", q1)
+
+	if q1 != None:
+		print("if")
+		context['userInfo'] = get_object_or_404(Personal, user_id=current_user.id)
+
+		template = 'personEdit.html'
+		return render(request, template, context)
+	else:
+
+		template = 'person.html'
+		return render(request, template, context)
+
+	template = 'person.html'
+	return render(request, template, context)
+
+	"""
+
+	context = dict()
+	url = request.META.get('HTTP_REFERER')
+
+	current_user = request.user
+	if request.method == 'POST':
+		form = PersonForm(request.POST or None)
+		if form.is_valid():
+			data = form.save(commit=False)
+			data.user = current_user
+			data.name = form.cleaned_data['name']
+			data.surname = form.cleaned_data['surname']
+			data.email = form.cleaned_data['email']
+			data.abouts = form.cleaned_data['abouts']
+			data.phone = form.cleaned_data['phone']
+			data.f_account = form.cleaned_data['f_account']
+			data.i_account = form.cleaned_data['i_account']
+			data.t_account = form.cleaned_data['t_account']
+			data.save()
+		else:
+			context['form'] = PersonForm(request.POST)
+
+		return HttpResponseRedirect(url)
+
+			try:
+				q1 = Peronal.objects.get(user_id=current_user.id)
+				print("try")
+			except BookUserList.DoesNotExist:
+				q1 = None
+				print("except")
+
+			if q1 != None:
+				messages.success(request, ' This book is already added')
+				print("if")
+			else:
+				data.booksList_id = pid
+				#data.booksList_id = BookUserList(user_id=current_user.id, pk=pid)
+				data.save()
+				messages.success(request, ' Thank You')
+		return HttpResponseRedirect(url)
+	template = 'person.html'
+	return render(request, template, context)
+	"""
+
+
+def personEdit(request):
+	context = dict()
+
+	current_user = request.user
+
+	post = get_object_or_404(User, pk=current_user.id)
+	puser = get_object_or_404(Personal, user_id=post.id)
+	puserU = get_object_or_404(Personal, user_id=post.id)
+	if request.method == "POST":
+		form = PersonForm(request.POST or None, instance=puser)
+		if form.is_valid():
+			puser = form.save(commit=False)
+			puser.user = current_user
+			if form.cleaned_data['name']:
+				puser.name = form.cleaned_data['name']
+				print("name var")
+			else:
+				puser.name = puserU.name
+				print("name yok")
+			if form.cleaned_data['surname']:
+				puser.surname = form.cleaned_data['surname']
+				print("name var")
+			else:
+				puser.surname = puserU.surname
+				print("name yok")
+
+			if form.cleaned_data['email']:
+				print("burada email var")
+				puser.email = form.cleaned_data['email']
+			else:
+				puser.email = puserU.email
+				print(puserU.email)
+				print("burada email boştu")
+			if form.cleaned_data['abouts']:
+				print("burada abouts var")
+				puser.abouts = form.cleaned_data['abouts']
+			else:
+				puser.abouts = puserU.abouts
+				print(puserU.email)
+				print("burada abouts boştu")
+
+			if form.cleaned_data['phone']:
+				print("burada phone var")
+				puser.phone = form.cleaned_data['phone']
+			else:
+				puser.phone = puserU.phone
+				print(puserU.phone)
+				print("burada phone boştu")
+
+			if form.cleaned_data['f_account']:
+				print("burada f_account var")
+				puser.f_account = form.cleaned_data['f_account']
+			else:
+				puser.f_account = puserU.f_account
+				print(puserU.f_account)
+				print("burada f_account boştu")
+
+			if form.cleaned_data['i_account']:
+				print("burada i_account var")
+				puser.i_account = form.cleaned_data['i_account']
+			else:
+				puser.i_account = puserU.i_account
+				print(puserU.i_account)
+				print("burada i_account boştu")
+
+			if form.cleaned_data['t_account']:
+				print("burada t_account var")
+				puser.t_account = form.cleaned_data['t_account']
+			else:
+				puser.t_account = puserU.t_account
+				print(puserU.t_account)
+				print("burada t_account boştu")
+
+			puser.save()
+
+			return redirect('about')
+
+
+	context['users'] = puser
+	"""
+	if request.method == "POST":
+		form = PersonForm(request.POST, instance=post)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.user = current_user
+			post.name = form.cleaned_data['name']
+			post.surname = form.cleaned_data['surname']
+			post.email = form.cleaned_data['email']
+			post.abouts = form.cleaned_data['abouts']
+			post.phone = form.cleaned_data['phone']
+			post.f_account = form.cleaned_data['f_account']
+			post.i_account = form.cleaned_data['i_account']
+			post.t_account = form.cleaned_data['t_account']
+			post.save()
+			return redirect('post_detail', pk=post.pk)
+	else:
+		form = PersonForm(instance=post)
+	"""
+
+	template = "personEdit.html"
+	return render(request, template, context)
+
+def addUser(request):
+	context = dict()
+	current_user = request.user
+	form = PersonForm(request.POST or None)
+	if request.method == 'POST':
+		if form.is_valid():
+			data2 = form.save(commit=False)
+			print("form valid")
+			data2 = Personal()
+			data2.user = current_user
+			data2.name = form.cleaned_data['name']
+			data2.surname = form.cleaned_data['surname']
+			data2.email = form.cleaned_data['email']
+			data2.abouts = form.cleaned_data['abouts']
+			data2.phone = form.cleaned_data['phone']
+			data2.f_account = form.cleaned_data['f_account']
+			data2.i_account = form.cleaned_data['i_account']
+			data2.t_account = form.cleaned_data['t_account']
+
+
+			try:
+				q1 = Personal.objects.get(user_id=current_user.id)
+				print("addUser try", q1)
+			except:
+				q1 = None
+				print("addUser except çalıştı")
+			if q1 != None:
+				messages.success(request, ' This book comments is already added')
+			else:
+				data2.user_id = current_user.id
+				data2.save()
+				messages.success(request, ' Thank You')
+		return HttpResponseRedirect("/about")
+
+	template = 'about.html'
+	return render(request, template, context)
