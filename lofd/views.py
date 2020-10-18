@@ -45,7 +45,7 @@ def BooksIndex(request):
 
 	# Books Lists & Pagination
 	books = BookUserList.objects.filter(user_id=currentUser)
-	paginator = Paginator(books, 10)
+	paginator = Paginator(books, 8)
 
 	c = BookComment.objects.filter(user_id=currentUser)
 
@@ -71,7 +71,7 @@ def WatchingIndex(request):
 	context = dict()
 	currentUser = request.user.id
 	watch = WatchUserList.objects.filter(user_id=currentUser)
-	paginator = Paginator(watch, 10)
+	paginator = Paginator(watch, 8)
 
 	w = WatchComment.objects.filter(user_id=currentUser)
 
@@ -98,7 +98,7 @@ def Lists(request):
 	context = dict()
 	# Books Lists & Pagination
 	bookLists = Book.objects.all()
-	paginator = Paginator(bookLists, 20)
+	paginator = Paginator(bookLists, 8)
 
 	try:
 		page = int(request.GET.get('page', '1'))
@@ -110,9 +110,16 @@ def Lists(request):
 	except(EmptyPage):
 		context['books'] = paginator.page(paginator.num_pages)
 
+	template = 'lists.html'
+	return render(request, template, context)
+
+
+def WLists(request):
+	context = dict()
+
 	# Watch Lists & Pagination
 	watchLists = Watch.objects.all()
-	paginator = Paginator(watchLists, 20)
+	paginator = Paginator(watchLists, 6)
 
 	try:
 		page = int(request.GET.get('page', '1'))
@@ -125,7 +132,7 @@ def Lists(request):
 		context['watch'] = paginator.page(paginator.num_pages)
 
 
-	template = 'lists.html'
+	template = 'w-lists.html'
 	return render(request, template, context)
 
 
@@ -167,10 +174,14 @@ def addList(request, pid):
 			data.title = form.cleaned_data['title']
 			try:
 				q1 = BookUserList.objects.get(user_id=current_user.id, booksList_id=pid)
+				print("try")
 			except BookUserList.DoesNotExist:
 				q1 = None
+				print("except")
+
 			if q1 != None:
 				messages.success(request, ' This book is already added')
+				print("if")
 			else:
 				data.booksList_id = pid
 				#data.booksList_id = BookUserList(user_id=current_user.id, pk=pid)
@@ -220,6 +231,7 @@ def createComment(request, pid):
 	return render(request, template, context)
 
 
+# books için update yorum işlemi
 def updateComment(request, pid):
 	context = dict()
 	context['book'] = get_object_or_404(Book, id=pid)
@@ -239,34 +251,49 @@ def updateComment(request, pid):
 	template = 'comments/updateText.html'
 	return render(request, template, context)
 
-
+# watches için update yorum işlemi
 def editComment(request, pid):
-	context = dict()
-	posts = get_object_or_404(BookComment, booksList_id=pid)
-
-	if request.method == "POST":
-		form = BookComment(request.POST or None, instance=posts)
-		if form.is_valid():
-			post = form.save(commit=False)
-			#post.author = request.user
-			post.comments = form.comments
-			post.save()
-			context['books'] = posts
-
-			template='books.html'
-			return render(request, template, context)
-	else:
-		context['books'] = BookCommenForm(instance=posts)
-
-	template='books.html'
-	return render(request, template, context)
-
-
-def createWComment(request, pid):
 	context = dict()
 	context['watch'] = get_object_or_404(Watch, id=pid)
 
-	template = 'comments/text.html'
+	watches = get_object_or_404(WatchComment, watchesList_id=pid)
+	watchName = get_object_or_404(WatchUserList, watchesList_id=pid)
+	#context['books'] = books.comments
+	form = WatchCommenForm(request.POST or None, instance=watches)
+	if form.is_valid():
+		form.save()
+
+		return redirect('watch')
+
+	context['watches'] = watches
+	context['watchName'] = watchName
+
+	template = 'comments/updateText.html'
+	return render(request, template, context)
+
+# watches için Create yorum işlemi
+def createWComment(request, pid):
+	context = dict()
+	context['watch'] = get_object_or_404(Watch, id=pid)
+	print("trydan önce")
+	try:
+		q1 = get_object_or_404(WatchComment, watchesList_id=pid)
+		print("try")
+	except:
+		q1 = None
+		print("except")
+	if q1 != None:
+		print("if")
+		context['wComments'] = get_object_or_404(WatchComment, watchesList_id=pid)
+
+		template='comments/updateText.html'
+		return render(request, template, context)
+
+	else:
+		template = 'comments/text.html'
+		return render(request, template, context)
+
+	template = 'books.html'
 	return render(request, template, context)
 
 # Book Comments
@@ -308,13 +335,26 @@ def addWComment(request, pid):
 			data = WatchComment()
 			data.user = current_user
 			data.comments = form.cleaned_data['comments']
-
 			try:
 				q1 = WatchComment.objects.get(user_id=current_user.id, watchesList_id=pid)
 			except WatchComment.DoesNotExist:
 				q1 = None
 			if q1 != None:
 				messages.success(request, ' This book comments is already added')
+
+				watches=get_object_or_404(WatchComment, watchesList_id=pid)
+				watchName=get_object_or_404(WatchUserList, watchesList_id=pid)
+				# context['books'] = books.comments
+				form=WatchCommenForm(request.POST or None, instance=watches)
+				if form.is_valid():
+					form.save()
+
+					return redirect('watch')
+
+				context['watches']=watches
+				context['watchName']=watchName
+				template='comments/updateText.html'
+				return render(request, template, context)
 			else:
 				data.watchesList_id = pid
 				data.save()

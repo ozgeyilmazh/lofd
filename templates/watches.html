@@ -7,80 +7,68 @@
 
 
 <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="skills">
-          <div class="w-100">
-                <h2 class="mb-4"> {% trans 'MOVIES - SERIES' %} </h2>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr style="text-align: center">
-                                            <th scope="col"> {% trans 'Movie / Series' %} </th>
-                                            <th scope="col"> {% trans 'Edit' %} </th>
+    <div class="w-100">
+        <h2 class="mb-4"> {% trans 'MOVIES - SERIES' %} </h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr style="text-align: center">
+                            <th scope="col"> {% trans 'Movie / Series' %} </th>
+                            <th scope="col"> {% trans 'Edit' %} </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for foo in watch %}
+                            <tr>
+                                <td> <a href="#"title="{{ foo.watchesList }}" data-toggle="popover" data-trigger="hover" data-content="
+                                    {% for w in w %}
+                                    {% if w.watchesList.id == foo.watchesList.id %}
+                                    {{w.comments}}
+                                    {% endif %}
+                                    {% endfor %}
+                                    ">{{ foo.watchesList }}</a>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">{{ id }}
+                                    <button type="submit" class="small btn" >
+                                        <a style="color: #34ce57;" href="{% url 'createWComment' foo.watchesList.id  %}">
+                                            <i class="far fa-edit"></i></a>
+                                    </button>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for foo in watch %}
-                                        <tr>
-
-                                            <td> <a href="#"title="{{ foo.watchesList }}" data-toggle="popover" data-trigger="hover" data-content="
-                                        {% for w in w %}
-                                        {% if w.watchesList.id == foo.watchesList.id %}
-                                        {{w.comments}}
-                                        {% endif %}
-                                        {% endfor %}
-                                        ">{{ foo.watchesList }}</a>
-
-
-
-                                                 </td>
-                                             <td style="text-align: center; vertical-align: middle;">{{ id }}
-                                          <button type="submit" class="small btn" >
-                                              <a style="color: #34ce57;" href="{% url 'createWComment' foo.watchesList.id  %}">
-                                                  <i class="far fa-comment-dots"></i></a>
-                                          </button>
-                                                <button type="submit" class="small btn" style="color: red;">
-                                                <a href="{%  url 'watchDelete' foo.id %}">
-                                                    <i class="far fa-trash-alt"></i></a>
-                                                </button>
-                                             </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-
-                        </div>
-                    </div>
+                                    <button type="submit" class="small btn" style="color: red;">
+                                        <a href="{%  url 'watchDelete' foo.id %}">
+                                            <i class="far fa-trash-alt"></i></a>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-
-                <hr class="m-0">
-                <!--Pagination amber-->
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination pg-amber justify-content-center">
-                            {% if watch.has_previous %}
-                                <li class="page-item">
-                                    <a class="page-link" tabindex="-1" href="?page={{ watch.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Previous' %}</a>
-
-                                </li>
-                            {% endif %}
-
-                                <li class="page-item">
-                                       <span class="page-link">Sayfa {{ watch.number }} of {{ watch.paginator.num_pages }}.</span>
-                                </li>
-                            {% if watch.has_next %}
-
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ watch.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Next' %}</a>
-                                </li>
-                            {% endif %}
-
-                            </ul>
-                        </nav>
-                <!--Pagination ends-->
-
             </div>
-
+        </div>
+        <hr class="m-0">
+        <!--Pagination amber-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pg-amber justify-content-center">
+                {% if watch.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" tabindex="-1" href="?page={{ watch.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Previous' %}</a>
+                    </li>
+                {% endif %}
+                <li class="page-item">
+                    <span class="page-link">Sayfa {{ watch.number }} of {{ watch.paginator.num_pages }}.</span>
+                </li>
+                {% if watch.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ watch.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Next' %}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!--Pagination ends-->
+    </div>
 </section>
 
 <hr class="m-0"> {% endblock content %}

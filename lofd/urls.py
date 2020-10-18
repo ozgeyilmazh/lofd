@@ -12,7 +12,7 @@ urlpatterns = [
 
     # Genele Açık Olan Kitap Listesi
     path('lists/', Lists, name='lists'),
-
+    path('wlists/', WLists, name='wlists'),
 
     # Personal Comments
     #path('mycomments/', mycCmments, name='mycomments'),

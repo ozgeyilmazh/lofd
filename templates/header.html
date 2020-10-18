@@ -51,7 +51,10 @@
                     <a class="nav-link js-scroll-trigger" href="{% url 'about' %}"> {{ user.username }} </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="{% url 'lists' %}"> {% trans 'LISTS' %} </a>
+                    <a class="nav-link js-scroll-trigger" href="{% url 'lists' %}"> {% trans 'BOOKS LISTS' %} </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'wlists' %}"> {% trans 'WATCHES LISTS' %} </a>
                 </li>
 
                 {% if user.is_authenticated %}

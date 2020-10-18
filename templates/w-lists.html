@@ -4,12 +4,11 @@
 
 {% block content %}
         <div class="w-100">
-
         </div>
     <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="setting">
     <div class="w-100">
               <div class="container">
-                <div class="row" style="height: 30px;">
+                <div class="row" style="height: 30px; margin: 5px;">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xl-12" >
                         <h4>
                         <p id="demo" class="alert-success" >
@@ -20,25 +19,32 @@
                     </div>
                 </div>
             </div>
-        <h2 class="mb-4"> {% trans 'Lists' %} </h2>
+        <h2 class="mb-4"> {% trans 'Watches Lists' %} </h2>
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
-                          <table class="table">
+
+                            <table class="table">
                               <thead>
                                 <tr>
-                                  <th scope="col">{% trans 'Author' %}</th>
-                                  <th scope="col">{% trans 'Book Name' %}</th>
+                                  <th scope="col">{% trans 'Image' %}</th>
+                                  <th scope="col">{% trans 'Title' %}</th>
                                   <th scope="col">{% trans 'Add' %}</th>
                                 </tr>
                               </thead>
                               <tbody>
-                        {% for foo in books %}
-                       <form class="form-add" method="POST" action="{% url 'add' foo.id  %}"  name="books"> {% csrf_token %}
+                        {% for foo in watch %}
+                       <form class="form-add2" method="POST"  action="{% url 'addWatch' foo.id %}" name="watch"> {% csrf_token %}
                            <tr>
-                               <td>{{ foo.authors }}
-                               </td>
-                               <td>{{ foo.title }}
+                               <th scope="row" width="75" height="75">
+                                   {% if foo.cover_image %}
+                                       <img src="{{ foo.cover_image.url }}" class="w-50">
+                                   {% else %}
+                                       <img src="{{ 'static/img/noimage.png' }}" class="w-50">
+                                   {% endif %}
+                               </th>
+                               <td>
+                                   {{ foo.title }}
                                </td>
                                <td>
                                    <button type="submit" class="small btn" style="color: #902b2b"><i class="fas fa-check"></i> </button>
@@ -46,27 +52,27 @@
                            </tr>
                       </form>
                         {% endfor %}
+
                               </tbody>
                             </table>
                     <!--Pagination amber-->
-                          <nav aria-label="Page navigation example">
+                        <nav aria-label="Page navigation example">
                             <ul class="pagination pg-amber justify-content-center">
-                            {% if books.has_previous %}
+                            {% if watch.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" tabindex="-1" href="?page={{ books.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Previous' %}</a>
+                                    <a class="page-link" tabindex="-1" href="?page={{ watch.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Previous' %}</a>
                                 </li>
                             {% endif %}
                                 <li class="page-item">
-                                       <span class="page-link">Sayfa {{ books.number }} of {{ books.paginator.num_pages }}.</span>
+                                       <span class="page-link">Sayfa {{ watch.number }} of {{ watch.paginator.num_pages }}.</span>
                                 </li>
-                            {% if books.has_next %}
+                            {% if watch.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ books.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Next' %}</a>
+                                    <a class="page-link" href="?page={{ watch.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans 'Next' %}</a>
                                 </li>
                             {% endif %}
                             </ul>
                         </nav>
-
                 </div>
             </div>
         </div>
@@ -74,3 +80,4 @@
     </section>
 
 {% endblock content %}
+

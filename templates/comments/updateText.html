@@ -3,6 +3,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
 <div class="container">
     <div style="margin: 300px 150px;">
         <div class="row">
@@ -18,22 +20,22 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
                 {% if books %}
+                     <form method="POST" name="comments">
+                        {% csrf_token %}
+                        <label for="exampleFormControlTextarea1">{{ books.comments }}</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" required id="id_comments" name="comments"  rows="2"></textarea>
+                        <br><br>
+                        <button style="float: right;" type="submit" class="btn btn-success"> Update </button>
+                    </form>
 
-                 <form method="POST" name="comments">
-                    {% csrf_token %}
-                    <label for="exampleFormControlTextarea1">{{ books.comments }}</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" required id="id_comments" name="comments"  rows="2"></textarea>
-                    <br><br>
-                    <button style="float: right;" type="submit" class="btn btn-success"> Update </button>
-                </form>
                 {% elif watch %}
+                    <form action="{% url 'editComment' watch.id %}"  method="POST" name="comments"> {% csrf_token %}
+                        <label for="exampleFormControlTextarea1">{{ wComments.comments }}</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" required id="id_comments" name="comments"  rows="2"></textarea>
+                        <br><br>
+                        <button style="float: right;" type="submit" class="btn btn-success"> Update </button>
+                    </form>
 
-                <form action="{% url 'editComment' watch.id %}" method="POST" name="comments"> {% csrf_token %}
-                    <label for="exampleFormControlTextarea1">Comments</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" required id="id_comments" name="comments"  rows="2"></textarea>
-                    <br><br>
-                    <button style="float: right;" type="submit" class="btn btn-success"> Update </button>
-                </form>
                 {% endif %}
 
             </div>

@@ -6,8 +6,6 @@
 
 {% block content %}
 
-
-
     <section class="resume-section p-3 p-lg-5 d-flex justify-content-center" id="books" href="books">
           <div class="w-100">
               <h2 class="mb-4"> {% trans 'Books' %} </h2>
@@ -41,18 +39,19 @@
                                         ">{{ foo.booksList.title }}</a></td>
                                       <td style="text-align: left; vertical-align: middle;"> {{ foo.booksList.authors }} </td>
                                       <td style="text-align: center; vertical-align: middle;">{{ id }}
-
-                                         <button type="submit" class="small btn" >
+                                             <button type="submit" class="small btn" >
                                             <a style="color: #34ce57;" href="{% url 'createComment' foo.booksList.id  %}">
                                                        <i class="far fa-comment-dots"></i>
                                             </a>
                                           </button>
+
                              {% for c in c %}
                                  {% if  c.booksList.id == foo.booksList.id %}
                                                <button type="submit" class="small btn" >
                                             <a style="color: #34ce57;" href="{% url 'updateComment' foo.booksList.id  %}">
                                                 <i class="far fa-edit"></i></a>
                                           </button>
+
                                  {% endif %}
                              {% endfor %}
                                           <button type="submit" class="small btn" style="color: red;">
@@ -97,5 +96,4 @@
 
     <hr class="m-0">
     
-      <br><br><br>
 {% endblock content %}
